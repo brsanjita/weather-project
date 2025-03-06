@@ -1,0 +1,21 @@
+{
+    "include": [
+      "./*.js",
+      "./*.jsx",
+      "./**/*.ts",
+      "./**/*.tsx",
+      "./models/*.js"
+    ],
+    "exclude": [
+      "node_modules"
+    ],
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "./dist"  // Optional: To specify the output directory
+    }
+  }
