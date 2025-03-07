@@ -1,33 +1,39 @@
 const mongoose = require('mongoose');
-const Station = require('./models/Station'); // Assuming Station model is defined
+const Station = require('./models/Station');
 
-const uri = 'mongodb://127.0.0.1:27017/testWeatherDB'; // MongoDB connection string
-
-const generateSampleData = (num) => {
-    const stations = [];
-    for (let i = 1; i <= num; i++) {
-        stations.push({
-            name: `Station ${i}`,
-            latitude: (Math.random() * 180 - 90).toFixed(4), // Random latitude between -90 and 90
-            longitude: (Math.random() * 360 - 180).toFixed(4), // Random longitude between -180 and 180
-            temperature: Math.floor(Math.random() * 40), // Random temperature between 0 and 40
-            humidity: Math.floor(Math.random() * 100), // Random humidity between 0 and 100
-            windSpeed: (Math.random() * 20).toFixed(2), // Random wind speed between 0 and 20
-            lastUpdated: new Date(),
-        });
-    }
-    return stations;
-};
-
-const sampleData = generateSampleData(500);
-
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(async () => {
-        console.log('Connected to the database');
-        await Station.insertMany(sampleData);
-        console.log('Sample data inserted');
-        mongoose.connection.close();
-    })
-    .catch(err => {
-        console.error('Database connection error:', err);
+async function generateStations() {
+  try {
+    // Connect to DB
+    await mongoose.connect('mongodb://127.0.0.1:27017/testWeatherDB', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
+
+    // Clear existing stations
+    await Station.deleteMany({});
+
+    const stations = [];
+    const numStations = 500; // Generate 500 stations
+
+    for (let i = 0; i < numStations; i++) {
+      const station = {
+        name: `Station ${i + 1}`,
+        latitude: (Math.random() * (49.384358 - 24.396308) + 24.396308).toFixed(6), // Random latitude in the USA
+        longitude: (Math.random() * (-66.93457 - -125.0) + -125.0).toFixed(6), // Random longitude in the USA
+        temperature: Math.floor(Math.random() * 100), // Random temperature
+        humidity: Math.floor(Math.random() * 100), // Random humidity
+        windSpeed: (Math.random() * 20).toFixed(2), // Random wind speed
+      };
+      stations.push(station);
+    }
+
+    await Station.insertMany(stations);
+    console.log(`${numStations} stations generated successfully.`);
+  } catch (error) {
+    console.error('Error generating stations:', error);
+  } finally {
+    mongoose.connection.close();
+  }
+}
+
+generateStations();
