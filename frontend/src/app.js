@@ -4,7 +4,7 @@ const WeatherMap = lazy(() => import('./components/weatherMap.jsx'));
 const App = () => {
     return (
         <div>
-            <h1><center>Welcome to the Weather App</center></h1>
+            <h1><center>AgWeatherNet</center></h1>
             <Suspense fallback={<div>Loading...</div>}>
                 <WeatherMap />
             </Suspense>

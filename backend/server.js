@@ -1,8 +1,7 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Station = require('./models/Station');
+const stationRoutes = require('./routes/stations'); // Import the stations route
 
 const app = express();
 
@@ -10,17 +9,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 1) Connect to MongoDB
-// Replace the connection string with your own MongoDB URI
 mongoose.connect('mongodb://127.0.0.1:27017/testWeatherDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error(err));
 
+// Use the stations route
+app.use('/api/stations', stationRoutes);
+
 const { getCachedStations, getWeatherData } = require('./cache'); // Import caching and weather data functions
 
-// 2) Routes
 // Fetch all stations with current weather data
 app.get('/api/stations', async (req, res) => {
   console.log('Fetching all stations'); // Log when fetching stations
@@ -48,7 +47,6 @@ app.get('/api/stations/:id', async (req, res) => {
   }
 });
 
-// 3) Start Server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Backend server listening on port ${PORT}`);
