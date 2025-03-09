@@ -14,13 +14,24 @@ const WeatherMap = React.memo(() => {
 
   useEffect(() => {
     const fetchStations = async () => {
-      const response = await fetch('http://localhost:4000/api/stations/24hour');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      try {
+        const response = await fetch('http://localhost:4000/api/stations/24hour', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); 
+        setLoading(false);
+        setStations(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching stations:', error);
+        setLoading(false);
       }
-      const data = await response.json();
-      setStations(data);
-      setLoading(false);
     };
     fetchStations();
   }, []);
@@ -81,22 +92,24 @@ const WeatherMap = React.memo(() => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
-      <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', backgroundColor: 'white', padding: '5px', borderRadius: '2px' }}>
-        <input 
-          type="range" 
-          min="0" 
-          max="23" 
-          step="1" 
-          value={selectedHour} // Bind the input value to the selected hour state
-          onChange={handleSeekChange} 
-          style={{ marginRight: '10px' }} 
+      <div style={{ marginBottom: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'white', padding: '5px', borderRadius: '2px' }}>
+        <div>Use the slider below and select the respective heatmap to observe weather in last 24hrs.</div>
+        <input
+          type="range"
+          min="0"
+          max="23"
+          step="1"
+          value={selectedHour}
+          onChange={handleSeekChange}
+          style={{ marginRight: '10px' }}
         />
-        <select onChange={(e) => { 
+
+        <select style={{ marginBottom: '10px' }} onChange={(e) => {
           const selectedValue = e.target.value;
           console.log(`${selectedValue} Heatmap selected`);
           setHeatmapType(selectedValue);
           setHeatmapLayer(null); // Reset heatmap layer when selection changes
-        }} style={{ marginRight: '5px' }}>
+        }}>
           <option value="">Select Heatmap</option>
           <option value="temperature">Temperature Heatmap</option>
           <option value="rainfall">Rainfall Heatmap</option>
@@ -154,8 +167,8 @@ const WeatherMap = React.memo(() => {
         </LayerGroup>
       </MapContainer>
       {loading && <Spinner animation="border" />}
-      <div className="task-bar" style={{ display: 'flex', justifyContent: 'center', backgroundColor: 'white', padding: '10px', borderRadius: '5px' }}>
-        <div className="legend" style={{ margin: '0 10px', fontSize: '12px' }}>
+      <div className="task-bar" style={{ position: 'absolute', right: '10px', bottom: '10px', backgroundColor: 'white', padding: '10px', borderRadius: '5px' }}>
+        <div className="legend" style={{ fontSize: '12px' }}>
           <h4 style={{ fontSize: '10px' }}>Heatmap Legend</h4>
           <div><span style={{ backgroundColor: 'red', width: '15px', height: '15px', display: 'inline-block' }}></span> High Temperature</div>
           <div><span style={{ backgroundColor: 'yellow', width: '15px', height: '15px', display: 'inline-block' }}></span> Medium Temperature</div>
