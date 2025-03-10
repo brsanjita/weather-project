@@ -289,9 +289,9 @@ const WeatherMap = React.memo(() => {
                 </Popup>
               </Marker>
             ))}
-            <Marker position={[39.8283, -98.5795]} icon={dotIcon}>
+            {/* <Marker position={[39.8283, -98.5795]} icon={dotIcon}>
               <Popup style={{ fontSize: '14px' }}>Center of the USA</Popup>
-            </Marker>
+            </Marker> */}
           </LayerGroup>
         </MapContainer>
         {/* Legend overlay */}
