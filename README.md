@@ -1,13 +1,38 @@
 # Weather Project
 
 ## Overview
-This project is a weather application that provides real-time weather data for various stations across the USA. It consists of a backend server built with Node.js and Express, and a frontend application built with React.
+This project is a weather application that provides real-time weather data for various weather stations across the USA. It consists of a backend server built with Node.js and Express, and a frontend application built with React.
 
 ## Features
 - Real-time weather data display.
 - Interactive map with weather station markers.
 - Heatmaps for temperature and rainfall.
 - Data caching for improved performance.
+- Fetches station data (every 10mins) and caches it from MongoDB
+- Generates random 500 stations (in the US) along with weather data (24hr weather for temperature and rainfall)
+- Displays heatmap overlays (temperature/rainfall) via a dropdown and slider to check past 24hr data along with respective map legend
+- Includes a radar overlay that can be toggled on/off with a checkbox
+- Provides a slider (with play/pause controls) for selecting past 1‑hour radar data
+- Map is interactive in terms of Zoom-in and Zoom-out, Map is pinned to the center and moves but always bounces back to the center. 
+
+##  Tech Stack
+The tech stack for this project includes the following:
+
+### Backend Tech Stack:
+- Node.js: The backend is built using Node.js.
+- Express: The application uses the Express framework for building the web server and handling routing.
+- Mongoose: This library is used for interacting with MongoDB.
+- CORS: The cors middleware is used to enable Cross-Origin Resource Sharing.
+- Axios: This library is used for making HTTP requests.
+- TypeScript: The project includes TypeScript for type safety.
+
+### Frontend Tech Stack:
+- React: The frontend is built using React.
+- React Bootstrap: This library is used for implementing Bootstrap components in a React-friendly way.
+- React Leaflet: This library is used for integrating Leaflet maps into the React application.
+- Leaflet: The library is included for handling map functionalities.
+
+This tech stack provides a robust foundation for building a weather application that fetches data from a MongoDB database and displays it interactively on a web interface.
 
 ## File Descriptions
 
@@ -183,3 +208,9 @@ This project is a weather application that provides real-time weather data for v
 
 ## Conclusion
 This README provides an overview of the project structure, file functionalities, and setup instructions. For any issues or further assistance, please refer to the project documentation or contact the project maintainers.
+
+## References:
+- https://www.iweathernet.com/total-rainfall-map-24-hours-to-72-hours
+- https://www.accuweather.com/en/us/downtown/30303/weather-radar/2625833
+- https://github.com/rwev/leaflet-radar?tab=readme-ov-file
+- https://mesonet.agron.iastate.edu/GIS/ridge.phtml
